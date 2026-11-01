@@ -39,7 +39,7 @@ const slides = [
 
 const Banner = () => {
   return (
-    <section className="mx-auto max-w-7xl px-4 pt-5">
+    <section className="mx-auto max-w-7xl px-8 pt-5">
       <Swiper
         modules={[Autoplay, Pagination, EffectFade]}
         effect="fade"
@@ -96,7 +96,7 @@ const Banner = () => {
       </Swiper>
 
       {/* Feature section */}
-      <div className="grid grid-cols-2 gap-5 bg-[#F8F1E7] px-5 py-7 sm:grid-cols-4 sm:px-10">
+      <div className="grid grid-cols-2 gap-5 rounded-b-xl bg-[#F8F1E7] px-5 py-7 sm:grid-cols-4 sm:px-10">
         {[
           "Curated Selection",
           "Independent Finds",
