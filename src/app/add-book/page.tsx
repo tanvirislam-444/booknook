@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { authClient } from "@/lib/auth-client";
 
 const initialForm = {
   title: "",
@@ -37,7 +38,7 @@ const initialForm = {
   image: "",
 };
 
-// Display the date without causing a hydration mismatch.
+
 const getDate = () =>
   new Date().toLocaleDateString("en-GB", {
     dateStyle: "full",
@@ -60,12 +61,14 @@ export default function AddBookPage() {
     getDate,
     getServerDate
   );
+  const {data:session} = authClient.useSession()
+  const user = session?.user
 
-  // Demo information. Replace with Better Auth session data later.
-  const userName = "Tanvir Islam";
-  const userEmail = "tanvir@gmail.com";
 
-  // Handle image selection
+  const userName = user?.name?? "Guest" ;
+  const userEmail = user?.email?? "" ;
+
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 

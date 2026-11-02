@@ -44,7 +44,7 @@ const HowItWorks = () => {
             return (
               <div
                 key={step.id}
-                className="flex items-start gap-4 rounded-xl border border-[#EDE2D3] bg-[#FFFCF7] px-4 py-4 shadow-[0_4px_15px_rgba(66,43,31,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-md"
+                className="flex items-start gap-4 rounded-xl border border-[#EDE2D3] bg-white px-4 py-4 shadow-[0_4px_15px_rgba(66,43,31,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-md"
               >
                 {/* Icon */}
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-4 border-[#F0DDC7] bg-[#C66A43] text-white">

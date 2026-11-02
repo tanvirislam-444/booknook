@@ -96,7 +96,7 @@ const Banner = () => {
       </Swiper>
 
       {/* Feature section */}
-      <div className="grid grid-cols-2 gap-5 rounded-b-xl bg-[#F8F1E7] px-5 py-7 sm:grid-cols-4 sm:px-10">
+      <div className="grid grid-cols-2 gap-5 rounded-b-xl bg-[#F8F1E7] px-5 py-7 sm:grid-cols-4 ">
         {[
           "Curated Selection",
           "Independent Finds",

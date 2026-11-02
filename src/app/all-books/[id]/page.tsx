@@ -1,5 +1,5 @@
-
 import Image from "next/image";
+import Link from "next/link";
 
 interface Book {
   _id: string;
@@ -14,7 +14,11 @@ interface Book {
   userEmail: string;
 }
 
-const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) => {
+const BookDetailsPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
 
   const res = await fetch(`http://localhost:8000/books/${id}`, {
@@ -24,9 +28,7 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
   if (!res.ok) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#F8F5EF]">
-        <h2 className="text-2xl font-bold text-[#422B1F]">
-          Book not found!
-        </h2>
+        <h2 className="text-2xl font-bold text-[#422B1F]">Book not found!</h2>
       </div>
     );
   }
@@ -36,10 +38,8 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
   return (
     <section className="min-h-screen bg-[#F8F5EF] px-4 py-12 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-6xl">
-
         {/* Book Details Card */}
         <div className="grid grid-cols-1 items-center gap-8 rounded-2xl border border-[#EAE0D5] bg-white p-5 shadow-sm md:grid-cols-2 md:gap-10 md:p-8">
-
           {/* Book Image */}
           <div className="relative mx-auto h-[420px] w-full max-w-[350px] overflow-hidden rounded-xl bg-[#F3EDE4]">
             <Image
@@ -54,7 +54,6 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
 
           {/* Book Information */}
           <div className="flex flex-col">
-
             {/* Category */}
             <div>
               <span className="inline-block rounded-full bg-[#F5E6D5] px-4 py-1 text-xs font-semibold text-[#A66A4D]">
@@ -67,9 +66,7 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
               {book.title}
             </h1>
 
-            <p className="mt-2 text-base text-[#806D60]">
-              by {book.author}
-            </p>
+            <p className="mt-2 text-base text-[#806D60]">by {book.author}</p>
 
             {/* Description */}
             <div className="mt-6">
@@ -84,7 +81,6 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
 
             {/* Copies and Added By */}
             <div className="mt-6 grid grid-cols-1 gap-4 rounded-xl border border-[#EAE0D5] bg-[#FAF7F2] p-5 sm:grid-cols-2">
-
               {/* Available Copies */}
               <div>
                 <p className="text-xs font-medium text-[#806D60]">
@@ -98,9 +94,7 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
 
               {/* Added By */}
               <div className="border-t border-[#EAE0D5] pt-4 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
-                <p className="text-xs font-medium text-[#806D60]">
-                  Added By
-                </p>
+                <p className="text-xs font-medium text-[#806D60]">Added By</p>
 
                 <p className="mt-2 font-semibold text-[#422B1F]">
                   {book.userName}
@@ -131,6 +125,12 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
                 : "Currently Unavailable"}
             </button>
 
+            <Link
+              href="/all-books"
+              className="mt-5 block w-full rounded-lg bg-[#FAF7F2] px-5 py-3.5 text-center text-sm font-semibold text-[#B97852] transition hover:bg-[#965638] hover:text-white"
+            >
+              Back to all books
+            </Link>
           </div>
         </div>
       </div>
