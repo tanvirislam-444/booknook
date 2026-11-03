@@ -82,6 +82,17 @@ const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 };
 
+  const handleGoogleRegister = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch {
+      toast.error("Google Registration failed. Please try again.");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#F8F5EF] p-4 sm:p-6">
       <div className="mx-auto grid min-h-[calc(100vh-48px)] max-w-6xl overflow-hidden rounded-2xl bg-white shadow-xl lg:grid-cols-2">
@@ -283,9 +294,10 @@ const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
          
             <button
               type="button"
+              onClick={handleGoogleRegister}
               className="flex w-full items-center justify-center gap-3 rounded-lg border border-[#DCCFC1] bg-white py-3 text-sm font-semibold text-[#422B1F] transition hover:bg-[#FAF7F2]"
             >
-              <Image
+              <Image 
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
                 alt="Google"
                   width={24}
