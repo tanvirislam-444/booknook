@@ -91,7 +91,9 @@ export function Navbar() {
             {user?.name}
           </DropdownMenuItem>
           <DropdownMenuItem className="focus:bg-[#4b362a] focus:text-white">
-         My Profile
+          <Link href="/profile">
+               My Profile
+           </Link>
             
           </DropdownMenuItem>
         </DropdownMenuGroup>
