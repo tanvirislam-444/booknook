@@ -151,7 +151,7 @@ const EditBook = ({ book, onUpdate }: EditBookProps) => {
             />
           </div>
 
-          {/* Image URL */}
+         
           <div className="space-y-2">
             <label className="text-sm font-semibold text-[#715b49]">
               Image URL

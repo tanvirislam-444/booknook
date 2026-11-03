@@ -84,7 +84,7 @@ const Banner = () => {
                 </p>
 
                 <Link
-                  href="/books"
+                  href="/all-books"
                   className="mt-7 inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-[#C66A43] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-[#A94F2E]"
                 >
                   Browse Books

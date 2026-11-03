@@ -1,3 +1,4 @@
+import BookDetailsContent from "@/components/borrowbook-components/BorrowUpdate";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,11 +15,7 @@ interface Book {
   userEmail: string;
 }
 
-const BookDetailsPage = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
+const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) => {
   const { id } = await params;
 
   const res = await fetch(`http://localhost:8000/books/${id}`, {
@@ -115,15 +112,7 @@ const BookDetailsPage = async ({
             </div>
 
             {/* Borrow Button */}
-            <button
-              type="button"
-              disabled={book.totalCopies <= 0}
-              className="mt-5 w-full rounded-lg bg-[#B97852] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-[#965638] disabled:cursor-not-allowed disabled:bg-gray-400"
-            >
-              {book.totalCopies > 0
-                ? "Borrow This Book"
-                : "Currently Unavailable"}
-            </button>
+         <BookDetailsContent book={book} />
 
             <Link
               href="/all-books"

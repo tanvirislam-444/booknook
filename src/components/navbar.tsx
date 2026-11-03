@@ -8,9 +8,6 @@ import { cn } from "cn";
 import { authClient } from "@/lib/auth-client";
 
 import {
-  BadgeCheckIcon,
-  BellIcon,
-  CreditCardIcon,
   LogOutIcon,
 } from "lucide-react"
 
