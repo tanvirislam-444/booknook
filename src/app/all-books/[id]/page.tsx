@@ -80,13 +80,7 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
             <div className="mt-6 grid grid-cols-1 gap-4 rounded-xl border border-[#EAE0D5] bg-[#FAF7F2] p-5 sm:grid-cols-2">
               {/* Available Copies */}
               <div>
-                <p className="text-xs font-medium text-[#806D60]">
-                  Available Copies
-                </p>
-
-                <p className="mt-2 text-2xl font-bold text-[#422B1F]">
-                  {book.totalCopies}
-                </p>
+              <BookDetailsContent book={book} />
               </div>
 
               {/* Added By */}
@@ -112,7 +106,7 @@ const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) =>
             </div>
 
             {/* Borrow Button */}
-         <BookDetailsContent book={book} />
+        
 
             <Link
               href="/all-books"

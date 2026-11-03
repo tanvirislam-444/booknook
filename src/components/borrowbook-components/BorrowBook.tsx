@@ -67,10 +67,12 @@ const [returnDate] = useState(() => {
       if (!res.ok) {
         throw new Error("Failed to borrow book");
       }
+
       const result = await res.json();
      onBorrowSuccess(result.remainingCopies);
       alert("Book borrowed successfully!");
       setOpen(false);
+      
     } catch (error) {
       console.error(error);
       alert("Something went wrong!");
@@ -86,7 +88,7 @@ const [returnDate] = useState(() => {
           <button
             type="button"
             disabled={book.totalCopies <= 0 || !session?.user}
-            className="mt-5 w-full rounded-lg bg-[#B97852] px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-[#965638] disabled:cursor-not-allowed disabled:bg-[#FAF7F2] disabled:text-[#B97852]"
+            className="mt-8 w-full rounded-lg bg-[#B97852] py-3 text-sm font-semibold text-white transition hover:bg-[#965638] disabled:cursor-not-allowed disabled:bg-[#FAF7F2] disabled:text-[#B97852]"
           >
             {book.totalCopies > 0
               ? "Borrow This Book"

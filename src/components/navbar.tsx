@@ -31,7 +31,7 @@ const navLinks = [
   { href: "/all-books", label: "All Books" },
   { href: "/add-book", label: "Add Book" },
   { href: "/my-books", label: "My Books" },
-  { href: "/my-borrows", label: "My Borrows" },
+  { href: "/my-borrow", label: "My Borrows" },
 ] as const;
 
 export function Navbar() {
