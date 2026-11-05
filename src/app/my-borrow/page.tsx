@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface Borrow {
   _id: string;
@@ -31,9 +32,17 @@ const MyBorrowBooksPage = () => {
       if (!session?.user?.email) return;
 
       try {
-
+        const token = await getTokenFromClient()
+       
         const res = await fetch(`http://localhost:8000/borrows?email=${encodeURIComponent(session.user.email)}`,
-          { cache: "no-store" }
+          { 
+            cache: "no-store",
+        headers: {
+        Authorization: `Bearer ${token}`
+      },
+
+           }
+    
         );
 
         if (!res.ok) {
@@ -73,12 +82,16 @@ const MyBorrowBooksPage = () => {
   const handleReturnBook = async (id: string) => {
     try {
       setReturningId(id);
-
+      const token = await getTokenFromClient()
       const res = await fetch(
         `http://localhost:8000/borrows/${id}`,
         {
           method: "DELETE",
+                headers: {
+        Authorization: `Bearer ${token}`
+      },
         }
+  
       );
 
       const result = await res.json();

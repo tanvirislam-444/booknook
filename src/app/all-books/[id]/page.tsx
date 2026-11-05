@@ -1,4 +1,5 @@
 import BookDetailsContent from "@/components/borrowbook-components/BorrowUpdate";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,8 +19,12 @@ interface Book {
 const BookDetailsPage = async ({params,}: {params: Promise<{ id: string }>;}) => {
   const { id } = await params;
 
+  const token = await getTokenFromServer()
   const res = await fetch(`http://localhost:8000/books/${id}`, {
     cache: "no-store",
+    headers:{
+      authorization: `Bearer ${token}`
+    }
   });
 
   if (!res.ok) {

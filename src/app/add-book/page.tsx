@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { authClient } from "@/lib/auth-client";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const initialForm = {
   title: "",
@@ -159,11 +160,14 @@ export default function AddBookPage() {
         userEmail,
       };
 
+    const token = await getTokenFromClient()
+
       //  Save book data to your Express API
       const response = await fetch("http://localhost:8000/books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`
         },
         body: JSON.stringify(bookData),
       });

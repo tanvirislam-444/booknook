@@ -5,6 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import EditBook from "@/components/EditBook";
 import DeleteBookPage from "@/components/DeletBook";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface Book {
   _id: string;
@@ -30,9 +31,21 @@ const MyBooksPage = () => {
       return;
     }
 
+ 
+
     const fetchMyBooks = async () => {
+
+         const token = await getTokenFromClient()
+
       const res = await fetch(
         `http://localhost:8000/my-books?email=${encodeURIComponent(email)}`,
+           {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        
+
       );
       const data = await res.json();
       setBooks(data);
@@ -48,10 +61,12 @@ const MyBooksPage = () => {
 
   const handleUpdate = async (id:string,updatedData: Partial<Book>):Promise<void> => {
   try {
+     const token = await getTokenFromClient()
     const res = await fetch(`http://localhost:8000/books/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(updatedData),
     });

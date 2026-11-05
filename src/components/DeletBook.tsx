@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface Book {
   _id: string;
@@ -31,9 +32,13 @@ interface DeleteBookProps {
 const DeleteBookPage = ({ book, onDelete }: DeleteBookProps) => {
   const handleDelete = async () => {
     try {
+      const token = await getTokenFromClient()
       const res = await fetch( `http://localhost:8000/books/${book._id}`,
         {
           method: "DELETE",
+                headers: {
+        Authorization: `Bearer ${token}`
+      },
         }
       );
 
