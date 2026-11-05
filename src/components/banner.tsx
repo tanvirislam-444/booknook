@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -37,9 +38,16 @@ const slides = [
   },
 ];
 
+const features = [
+  "Curated Selection",
+  "Independent Finds",
+  "Modern Experience",
+  "Reader Focused",
+];
+
 const Banner = () => {
   return (
-    <section className="mx-auto max-w-7xl px-8 pt-5">
+    <section className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 lg:px-8">
       <Swiper
         modules={[Autoplay, Pagination, EffectFade]}
         effect="fade"
@@ -48,17 +56,19 @@ const Banner = () => {
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
         pagination={{
           clickable: true,
         }}
-        className="book-slider h-[650px] overflow-hidden rounded-t-xl md:h-[520px]"
+        className="book-slider overflow-hidden rounded-t-xl"
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id} className="h-full">
-            <div className="grid h-full grid-cols-1 md:grid-cols-2">
-              {/* Left image */}
-              <div className="relative h-[300px] md:h-full">
+          <SwiperSlide key={slide.id}>
+            <div className="grid min-h-[680px] grid-cols-1 md:min-h-[520px] md:grid-cols-2">
+
+              {/* Left Image */}
+              <div className="relative h-[260px] sm:h-[320px] md:h-full">
                 <Image
                   src={slide.image}
                   alt={slide.title}
@@ -69,52 +79,56 @@ const Banner = () => {
                 />
               </div>
 
-              {/* Right content */}
-              <div className="flex flex-col justify-center bg-[#422B1F] px-8 py-12 text-[#FFF8EC] sm:px-12 md:px-14">
+              {/* Right Content */}
+              <div className="flex min-h-[420px] flex-col items-start justify-center bg-[#422B1F] px-6 py-10 text-[#FFF8EC] sm:px-10 sm:py-12 md:min-h-0 md:px-10 lg:px-14">
+
                 <p className="mb-4 text-xs font-semibold tracking-[2px] text-[#D9A77E]">
                   {slide.subtitle}
                 </p>
 
-                <h1 className="max-w-lg font-serif text-4xl font-bold leading-tight sm:text-5xl">
+                <h1 className="max-w-lg font-serif text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
                   {slide.title}
                 </h1>
 
-                <p className="mt-5 max-w-md text-sm leading-7 text-[#E7D8C8]">
+                <p className="mt-5 max-w-md text-sm leading-7 text-[#E7D8C8] sm:text-base">
                   {slide.description}
                 </p>
 
                 <Link
                   href="/all-books"
-                  className="mt-7 inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-[#C66A43] px-7 py-4 text-sm font-semibold text-white transition duration-300 hover:bg-[#A94F2E]"
+                  className="mt-7 inline-flex min-h-12 w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-[#C66A43] px-7 py-3.5 text-sm font-semibold text-white transition duration-300 hover:bg-[#A94F2E]"
                 >
                   Browse Books
                 </Link>
+
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {/* Feature section */}
-      <div className="grid grid-cols-2 gap-5 rounded-b-xl bg-[#F8F1E7] px-5 py-7 sm:grid-cols-4 ">
-        {[
-          "Curated Selection",
-          "Independent Finds",
-          "Modern Experience",
-          "Reader Focused",
-        ].map((feature) => (
-          <div key={feature} className="flex items-center justify-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C9B59D] text-xl text-[#422B1F]">
+      {/* Feature Section */}
+      <div className="grid grid-cols-2 gap-x-3 gap-y-6 rounded-b-xl bg-[#F8F1E7] px-4 py-7 sm:grid-cols-2 sm:gap-5 sm:px-6 md:grid-cols-4">
+
+        {features.map((feature) => (
+          <div
+            key={feature}
+            className="flex items-center justify-center gap-2 sm:gap-3"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#C9B59D] text-lg text-[#422B1F] sm:h-10 sm:w-10 sm:text-xl">
               ✦
             </span>
-            <span className="text-sm font-semibold text-[#422B1F]">
+
+            <span className="text-center text-xs font-semibold text-[#422B1F] sm:text-sm">
               {feature}
             </span>
           </div>
         ))}
+
       </div>
     </section>
   );
 };
 
 export default Banner;
+

@@ -83,12 +83,15 @@ const MyBorrowBooksPage = () => {
     try {
       setReturningId(id);
       const token = await getTokenFromClient();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrows/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/borrows/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const result = await res.json();
 
@@ -157,16 +160,18 @@ const MyBorrowBooksPage = () => {
         )}
 
         {/* Borrowed Books Table */}
+
         <div className="overflow-hidden rounded-xl border border-[#EAE0D5] bg-white shadow-sm">
-          <div className="overflow-x-auto">
+          {/* Desktop & Tablet Table */}
+          <div className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[750px] text-left">
               {/* Table Header */}
               <thead className="border-b border-[#EAE0D5] bg-[#FAF7F2]">
                 <tr className="text-sm font-semibold text-[#422B1F]">
-                  <th className="px-10 py-4">Book</th>
+                  <th className="px-6 py-4">Book</th>
                   <th className="px-5 py-4">Borrow Date</th>
                   <th className="px-5 py-4">Return Date</th>
-                  <th className="px-13 py-4">Action</th>
+                  <th className="px-5 py-4">Action</th>
                 </tr>
               </thead>
 
@@ -174,8 +179,8 @@ const MyBorrowBooksPage = () => {
               <tbody className="divide-y divide-[#EAE0D5]">
                 {borrows.map((book) => (
                   <tr key={book._id} className="transition hover:bg-[#FAF7F2]">
-                    {/* Book Image and Title */}
-                    <td className="px-5 py-4">
+                    {/* Book */}
+                    <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded-md bg-[#F3EDE4]">
                           <Image
@@ -205,28 +210,102 @@ const MyBorrowBooksPage = () => {
 
                     {/* Action */}
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        {book.status === "returned" ? (
-                          <span className="rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
-                            Returned
-                          </span>
-                        ) : (
-                          <button
-                            onClick={() => handleReturnBook(book._id)}
-                            disabled={returningId !== null}
-                            className="rounded-lg bg-[#B97852] px-4 py-2 text-sm font-semibold text-white hover:bg-[#965638] disabled:opacity-50"
-                          >
-                            {returningId === book._id
-                              ? "Returning..."
-                              : "Return Book"}
-                          </button>
-                        )}
-                      </div>
+                      {book.status === "returned" ? (
+                        <span className="inline-block rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+                          Returned
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handleReturnBook(book._id)}
+                          disabled={returningId !== null}
+                          className="whitespace-nowrap rounded-lg bg-[#B97852] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#965638] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {returningId === book._id
+                            ? "Returning..."
+                            : "Return Book"}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card Layout */}
+          <div className="divide-y divide-[#EAE0D5] md:hidden">
+            {borrows.map((book) => (
+              <div key={book._id} className="p-4 sm:p-5">
+                {/* Book Information */}
+                <div className="flex items-start gap-4">
+                  <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-lg bg-[#F3EDE4]">
+                    <Image
+                      src={book.bookImage}
+                      alt={book.bookTitle}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h3 className="break-words text-base font-bold text-[#422B1F]">
+                      {book.bookTitle}
+                    </h3>
+
+                    <span
+                      className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+                        book.status === "returned"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-[#F8F1E7] text-[#965638]"
+                      }`}
+                    >
+                      {book.status === "returned" ? "Returned" : "Borrowed"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Dates */}
+                <div className="mt-5 grid grid-cols-2 gap-3 rounded-lg bg-[#FAF7F2] p-3">
+                  <div>
+                    <p className="text-xs font-medium text-[#806D60]">
+                      Borrow Date
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-[#422B1F]">
+                      {formatDate(book.borrowDate)}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-medium text-[#806D60]">
+                      Return Date
+                    </p>
+                    <p className="mt-1 text-sm font-semibold text-[#422B1F]">
+                      {formatDate(book.returnDate)}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <div className="mt-4">
+                  {book.status === "returned" ? (
+                    <div className="flex items-center justify-center rounded-lg bg-green-100 px-4 py-3 text-sm font-semibold text-green-700">
+                      <span>✓ Book Returned Successfully</span>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleReturnBook(book._id)}
+                      disabled={returningId !== null}
+                      className="w-full rounded-lg bg-[#B97852] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#965638] disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {returningId === book._id
+                        ? "Returning..."
+                        : "Return Book"}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Empty State */}
@@ -238,14 +317,15 @@ const MyBorrowBooksPage = () => {
                 No Borrowed Books Yet!
               </h3>
 
-              <p className="mt-2 text-sm text-[#806D60] mb-4">
+              <p className="mb-5 mt-2 text-sm text-[#806D60]">
                 You haven&apos;t borrowed any books yet.
               </p>
+
               <Link
-                href={"/all-books"}
-                className="rounded-lg bg-[#B97852] px-4 py-2 text-sm font-semibold text-white hover:bg-[#965638] disabled:opacity-50"
+                href="/all-books"
+                className="inline-flex rounded-lg bg-[#B97852] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#965638]"
               >
-                Borrow Book
+                Browse Books
               </Link>
             </div>
           )}
