@@ -68,7 +68,7 @@ const ExploreCategories = () => {
             return (
               <Link
                 key={category.name}
-                href={`/all-books?category=${category.name}`}
+                href={`/categories/${category.name.toLowerCase()}`}
                 className="group flex flex-col items-center justify-center rounded-xl border border-[#EAE0D5] bg-white px-4 py-7 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#B97852] hover:shadow-md"
               >
                 {/* Icon */}

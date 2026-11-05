@@ -73,7 +73,7 @@ const EditBook = ({ book, onUpdate }: EditBookProps) => {
         }
       />
 
-      <DialogContent className="max-h-[90vh] overflow-y-auto border-[#eadfce] bg-[#fffdf8] sm:max-w-[550px]">
+      <DialogContent data-lenis-prevent className="max-h-[90vh] overflow-y-auto border-[#eadfce] bg-[#fffdf8] sm:max-w-[550px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-[#35251c]">
             Edit Book

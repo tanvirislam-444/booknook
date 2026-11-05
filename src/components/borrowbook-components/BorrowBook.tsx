@@ -106,7 +106,9 @@ const BorrowBook = ({ book, onBorrowSuccess }: BorrowBookProps) => {
         }
       />
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent data-lenis-prevent 
+      className="max-h-[90dvh] overflow-y-auto overscroll-contain border-[#E8DCCB] bg-[#FFFDFA] sm:max-w-md"
+      >
         <form onSubmit={handleBorrow}>
           <DialogHeader>
             <DialogTitle>Borrow This Book</DialogTitle>

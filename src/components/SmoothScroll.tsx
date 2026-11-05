@@ -16,6 +16,8 @@ options={
         lerp:0.1,
         duration:1.2,
         smoothWheel:true,
+    prevent: (node) =>
+    node.closest("[data-lenis-prevent]") !== null,
     }
 
 }
