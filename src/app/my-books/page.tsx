@@ -38,7 +38,7 @@ const MyBooksPage = () => {
          const token = await getTokenFromClient()
 
       const res = await fetch(
-        `http://localhost:8000/my-books?email=${encodeURIComponent(email)}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/my-books?email=${encodeURIComponent(email)}`,
            {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ const MyBooksPage = () => {
   const handleUpdate = async (id:string,updatedData: Partial<Book>):Promise<void> => {
   try {
      const token = await getTokenFromClient()
-    const res = await fetch(`http://localhost:8000/books/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

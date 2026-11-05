@@ -11,7 +11,7 @@ interface Book {
 }
 
 const NewArrivals = async () => {
-  const res = await fetch("http://localhost:8000/books/latest-books", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/latest-books`, {
     cache: "no-store",
   });
 

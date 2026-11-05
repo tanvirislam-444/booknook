@@ -36,7 +36,7 @@ const MyBorrowBooksPage = () => {
         const token = await getTokenFromClient();
 
         const res = await fetch(
-          `http://localhost:8000/borrows?email=${encodeURIComponent(session.user.email)}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/borrows?email=${encodeURIComponent(session.user.email)}`,
           {
             cache: "no-store",
             headers: {
@@ -83,7 +83,7 @@ const MyBorrowBooksPage = () => {
     try {
       setReturningId(id);
       const token = await getTokenFromClient();
-      const res = await fetch(`http://localhost:8000/borrows/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrows/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

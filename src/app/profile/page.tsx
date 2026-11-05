@@ -39,7 +39,7 @@ const ProfilePage = () => {const { data: session} = authClient.useSession();
       Authorization: `Bearer ${token}`,
     },
           }),
-          fetch(`http://localhost:8000/borrows?email=${email}`, {
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/borrows?email=${email}`, {
             cache: "no-store",
               headers: {
       Authorization: `Bearer ${token}`,

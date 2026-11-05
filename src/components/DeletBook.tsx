@@ -33,7 +33,7 @@ const DeleteBookPage = ({ book, onDelete }: DeleteBookProps) => {
   const handleDelete = async () => {
     try {
       const token = await getTokenFromClient()
-      const res = await fetch( `http://localhost:8000/books/${book._id}`,
+      const res = await fetch( `${process.env.NEXT_PUBLIC_API_URL}/books/${book._id}`,
         {
           method: "DELETE",
                 headers: {
