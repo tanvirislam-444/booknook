@@ -17,6 +17,7 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast } from "sonner";
 
 interface Book {
   _id: string;
@@ -33,55 +34,61 @@ const BorrowBook = ({ book, onBorrowSuccess }: BorrowBookProps) => {
   const { data: session } = authClient.useSession();
   const [open, setOpen] = useState(false);
 
-   const [borrowDate] = useState(() => new Date());
+  const [borrowDate] = useState(() => new Date());
 
-const [returnDate] = useState(() => {
-  const date = new Date();
-  date.setDate(date.getDate() + 7);
-  return date;
-});
+  const [returnDate] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+    return date;
+  });
 
   const handleBorrow = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!session?.user) return;
-    const borrowData = {
-      bookId: book._id,
-      bookTitle: book.title,
-      bookImage: book.image,
-      userName: session.user.name,
-      userEmail: session.user.email,
-      borrowDate: borrowDate.toISOString(),
-      returnDate: returnDate.toISOString(),
-    };
+    if (!session?.user) {
+      toast.error("Please login first!");
+      return;
+    }
 
     try {
-         const token = await getTokenFromClient()
+    
+
+      const borrowData = {
+        bookId: book._id,
+        bookTitle: book.title,
+        bookImage: book.image,
+        userName: session.user.name,
+        userEmail: session.user.email,
+        borrowDate: borrowDate.toISOString(),
+        returnDate: returnDate.toISOString(),
+      };
+        const token = await getTokenFromClient();
       const res = await fetch("http://localhost:8000/borrows", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(borrowData),
       });
 
+      const result = await res.json();
+
+      
       if (!res.ok) {
-        throw new Error("Failed to borrow book");
+        toast.error(result.message || "Failed to borrow book!");
+        return;
       }
 
-      const result = await res.json();
-     onBorrowSuccess(result.remainingCopies);
-      alert("Book borrowed successfully!");
+      onBorrowSuccess(result.remainingCopies);
+
+      toast.success("Book borrowed successfully!");
       setOpen(false);
-      
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong!");
-    } 
+      console.error("Borrow error:", error);
+      toast.error("Something went wrong!");
+    }
   };
-
-
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -133,25 +140,25 @@ const [returnDate] = useState(() => {
               />
             </Field>
 
-<Field>
-  <Label htmlFor="borrow-date">Borrow Date</Label>
-  <Input
-    id="borrow-date"
-    type="date"
-    value={borrowDate.toISOString().split("T")[0]}
-    readOnly
-  />
-</Field>
+            <Field>
+              <Label htmlFor="borrow-date">Borrow Date</Label>
+              <Input
+                id="borrow-date"
+                type="date"
+                value={borrowDate.toISOString().split("T")[0]}
+                readOnly
+              />
+            </Field>
 
-<Field>
-  <Label htmlFor="return-date">Expected Return Date</Label>
-  <Input
-    id="return-date"
-    type="date"
-    value={returnDate.toISOString().split("T")[0]}
-    readOnly
-  />
-</Field>
+            <Field>
+              <Label htmlFor="return-date">Expected Return Date</Label>
+              <Input
+                id="return-date"
+                type="date"
+                value={returnDate.toISOString().split("T")[0]}
+                readOnly
+              />
+            </Field>
           </FieldGroup>
 
           <DialogFooter className="mt-5">
@@ -163,11 +170,12 @@ const [returnDate] = useState(() => {
               }
             />
 
-            <Button className="bg-[#B97852] hover:bg-amber-900"
+            <Button
+              className="bg-[#B97852] hover:bg-amber-900"
               type="submit"
-              disabled={ book.totalCopies <= 0 || !session?.user}
+              disabled={book.totalCopies <= 0 || !session?.user}
             >
-                Borrow Submit
+              Borrow Submit
             </Button>
           </DialogFooter>
         </form>

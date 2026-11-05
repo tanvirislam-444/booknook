@@ -1,10 +1,11 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast } from "sonner";
+import Link from "next/link";
 
 interface Borrow {
   _id: string;
@@ -32,17 +33,16 @@ const MyBorrowBooksPage = () => {
       if (!session?.user?.email) return;
 
       try {
-        const token = await getTokenFromClient()
-       
-        const res = await fetch(`http://localhost:8000/borrows?email=${encodeURIComponent(session.user.email)}`,
-          { 
-            cache: "no-store",
-        headers: {
-        Authorization: `Bearer ${token}`
-      },
+        const token = await getTokenFromClient();
 
-           }
-    
+        const res = await fetch(
+          `http://localhost:8000/borrows?email=${encodeURIComponent(session.user.email)}`,
+          {
+            cache: "no-store",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         );
 
         if (!res.ok) {
@@ -66,7 +66,7 @@ const MyBorrowBooksPage = () => {
 
   // Statistics
   const currentlyBorrowed = borrows.filter(
-    (book) => book.status !== "returned"
+    (book) => book.status !== "returned",
   );
 
   // Date formatting
@@ -82,34 +82,25 @@ const MyBorrowBooksPage = () => {
   const handleReturnBook = async (id: string) => {
     try {
       setReturningId(id);
-      const token = await getTokenFromClient()
-      const res = await fetch(
-        `http://localhost:8000/borrows/${id}`,
-        {
-          method: "DELETE",
-                headers: {
-        Authorization: `Bearer ${token}`
-      },
-        }
-  
-      );
+      const token = await getTokenFromClient();
+      const res = await fetch(`http://localhost:8000/borrows/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const result = await res.json();
 
       if (!res.ok) {
         throw new Error(result.message || "Failed to return book");
-        
       }
-      setBorrows((prev) =>
-  prev.filter((book) => book._id !== id)
-);
+      setBorrows((prev) => prev.filter((book) => book._id !== id));
 
-alert("Book returned successfully!");
+      toast.success("Book returned successfully!");
     } catch (err) {
       console.error(err);
-      alert(
-        err instanceof Error ? err.message : "Something went wrong!"
-      );
+      alert(err instanceof Error ? err.message : "Something went wrong!");
     } finally {
       setReturningId(null);
     }
@@ -129,7 +120,6 @@ alert("Book returned successfully!");
   return (
     <section className="min-h-screen bg-[#F8F5EF] px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-6xl">
-
         {/* Page Heading */}
         <div className="mb-7">
           <h1 className="font-serif text-3xl font-bold text-[#422B1F]">
@@ -143,7 +133,6 @@ alert("Book returned successfully!");
 
         {/* Statistics Cards */}
         <div className="mb-7 grid grid-cols-1 gap-5 sm:grid-cols-2">
-
           {/* Currently Borrowed */}
           <div className="flex items-center gap-5 rounded-xl border border-[#EAE0D5] bg-[#F3EADF] p-5 shadow-sm">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FAF5EC] text-3xl">
@@ -155,9 +144,7 @@ alert("Book returned successfully!");
                 {currentlyBorrowed.length}
               </h2>
 
-              <p className="text-sm text-[#806D60]">
-                Currently Borrowed
-              </p>
+              <p className="text-sm text-[#806D60]">Currently Borrowed</p>
             </div>
           </div>
         </div>
@@ -171,10 +158,8 @@ alert("Book returned successfully!");
 
         {/* Borrowed Books Table */}
         <div className="overflow-hidden rounded-xl border border-[#EAE0D5] bg-white shadow-sm">
-
           <div className="overflow-x-auto">
             <table className="w-full min-w-[750px] text-left">
-
               {/* Table Header */}
               <thead className="border-b border-[#EAE0D5] bg-[#FAF7F2]">
                 <tr className="text-sm font-semibold text-[#422B1F]">
@@ -187,17 +172,11 @@ alert("Book returned successfully!");
 
               {/* Table Body */}
               <tbody className="divide-y divide-[#EAE0D5]">
-
                 {borrows.map((book) => (
-                  <tr
-                    key={book._id}
-                    className="transition hover:bg-[#FAF7F2]"
-                  >
-
+                  <tr key={book._id} className="transition hover:bg-[#FAF7F2]">
                     {/* Book Image and Title */}
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-4">
-
                         <div className="relative h-16 w-12 shrink-0 overflow-hidden rounded-md bg-[#F3EDE4]">
                           <Image
                             src={book.bookImage}
@@ -211,7 +190,6 @@ alert("Book returned successfully!");
                         <h3 className="font-semibold text-[#422B1F]">
                           {book.bookTitle}
                         </h3>
-
                       </div>
                     </td>
 
@@ -227,27 +205,26 @@ alert("Book returned successfully!");
 
                     {/* Action */}
                     <td className="px-5 py-4">
-
-                      {book.status === "returned" ? (
-                        <span className="inline-block rounded-lg bg-green-100 px-5 py-2 text-sm font-semibold text-green-700">
-                          Returned
-                        </span>
-                      ) : (
-                        <button
-                          onClick={() => handleReturnBook(book._id)}
-                          disabled={returningId !== null}
-                          className="rounded-lg bg-[#B97852] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#965638] disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          {returningId === book._id
-                            ? "Returning..."
-                            : "Return Book"}
-                        </button>
-                      )}
-
+                      <div className="flex items-center gap-3">
+                        {book.status === "returned" ? (
+                          <span className="rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+                            Returned
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => handleReturnBook(book._id)}
+                            disabled={returningId !== null}
+                            className="rounded-lg bg-[#B97852] px-4 py-2 text-sm font-semibold text-white hover:bg-[#965638] disabled:opacity-50"
+                          >
+                            {returningId === book._id
+                              ? "Returning..."
+                              : "Return Book"}
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
-
               </tbody>
             </table>
           </div>
@@ -261,12 +238,17 @@ alert("Book returned successfully!");
                 No Borrowed Books Yet!
               </h3>
 
-              <p className="mt-2 text-sm text-[#806D60]">
+              <p className="mt-2 text-sm text-[#806D60] mb-4">
                 You haven&apos;t borrowed any books yet.
               </p>
+              <Link
+                href={"/all-books"}
+                className="rounded-lg bg-[#B97852] px-4 py-2 text-sm font-semibold text-white hover:bg-[#965638] disabled:opacity-50"
+              >
+                Borrow Book
+              </Link>
             </div>
           )}
-
         </div>
       </div>
     </section>
