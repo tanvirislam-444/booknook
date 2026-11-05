@@ -4,7 +4,7 @@
 
 ## 🌐 Live Website
 
-**Live Site:** [Visit BookNook](YOUR_LIVE_SITE_URL)
+**Live Site:** [Visit BookNook](https://booknook-1.vercel.app/)
 
 ## ✨ Key Features
 
